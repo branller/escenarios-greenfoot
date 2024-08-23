@@ -1,4 +1,4 @@
-*/*.class
+**/*.class
 */*.jar
 */*.ctxt
 */.settings
@@ -7,3 +7,4 @@
 */greenfoot/*.jar
 /.metadata/
 **/doc
+**/*.gfar
