@@ -10,4 +10,6 @@ comment2.text=\n\ post\:\ El\ Piloto\ deja\ la\ Nave\n
 comment3.params=
 comment3.target=void\ actualizarImagen()
 comment3.text=\n\ Actualiza\ la\ imagen\ del\ Piloto,\ de\ acuerdo\ a\ su\ estado\n
-numComments=4
+comment4.params=
+comment4.target=void\ configurar()
+numComments=5
