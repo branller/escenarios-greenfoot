@@ -6,7 +6,10 @@ public class NaveDeAtaque extends NaveAliada implements Atacante {
      * Representa el estado de los motores de la {@link NaveDeAtaque}.
      */
     protected boolean motoresEncendidos = false;
-
+    //Representa si tiene un piloto
+    protected boolean tienePiloto = false;
+    //Almacena el numero del piloto para el sombreado
+    protected int numPiloto;
     /**
      * Inicializa una nueva NaveDeAtaque con los motores apagados
      */
@@ -42,7 +45,28 @@ public class NaveDeAtaque extends NaveAliada implements Atacante {
             actualizarImagen();
         }
     }
-
+    
+    /**
+     * Pre: Recibe un entero 
+     * Post: La nave se sombrea con el color del piloto que la conduce.
+     */
+    protected void conducir(int color){
+        this.tienePiloto = true;
+        this.numPiloto = color;
+        actualizarImagen();
+    }
+    
+    /**
+     * Pre: La nave tiene que tener un piloto
+     * Post: La nave pierde el sombreado y se "reinicia"
+     */
+    protected void notConducir(){
+        this.tienePiloto = false;
+        this.numPiloto = 0;
+        actualizarImagen();
+    }
+    
+    
     /**
      * pre: los motores se encuentran encendidos
      * {@link NaveDeAtaque#motoresEncendidos} <br/>
@@ -211,4 +235,34 @@ public class NaveDeAtaque extends NaveAliada implements Atacante {
         }
         return valor;        
     }
+    
+      @Override
+    protected void actualizarImagen() {
+        int tamCelda = getWorld().getCellSize();
+        GreenfootImage image = getImage();
+        image.scale((int) (tamCelda * ESCALA_X), (int) (tamCelda * ESCALA_Y));
+        setImage(image);
+
+        MyGreenfootImage canvas = new MyGreenfootImage(imagenBase.getWidth(),
+                imagenBase.getHeight() + getWorld().getCellSize() / 3);
+
+        canvas.setColor(Color.BLACK);
+        canvas.fillRect(4, imagenBase.getHeight() - 2, getWorld().getCellSize() - 6, 12);
+        canvas.setColor(obtenerColorDeBarraIndicadora());
+
+        canvas.fillRect(6, imagenBase.getHeight(),
+            (int) ((getWorld().getCellSize() - 10) * obtenerProporcionDeBarraIndicadora()), 8);
+
+        canvas.rotate(360 - direccion.rotacion);
+
+        canvas.drawImage(imagenBase, 0, getWorld().getCellSize() / 6);
+        setImage(canvas);
+        
+    
+        if(this.tienePiloto && this.numPiloto!= 0){
+          canvas.highlightColor(this.numPiloto);
+        };
+
+    }
+
 }

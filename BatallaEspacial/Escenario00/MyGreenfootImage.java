@@ -5,10 +5,10 @@ import greenfoot.GreenfootImage;
  * Es un sprite mutable, que puedo configurar
  */
 public class MyGreenfootImage extends GreenfootImage {
-    private static final Color HIGHLIGHT_COLOR = new Color(30, 200, 200);
+    //private static final Color HIGHLIGHT_COLOR = new Color(30, 200, 200);
     private static final Color SILHOUETTE_COLOR = new Color(30, 30, 30);
     private static final Color SHADOW_COLOR = new Color(30, 30, 30, 100);
-
+    private static Color HIGHLIGHT_COLOR = new Color(30, 200, 200);
     public MyGreenfootImage(GreenfootImage image) throws IllegalArgumentException {
         super(image);
         configurar();
@@ -60,7 +60,7 @@ public class MyGreenfootImage extends GreenfootImage {
     public void highlight(Color highlight) {
         MyGreenfootImage copy = clone();
 
-        final int DELTA = 3;
+        final int DELTA = 1;
         
         for(int i = 0; i < DELTA; i++) {
             MyGreenfootImage x = this.clone();
@@ -121,5 +121,25 @@ public class MyGreenfootImage extends GreenfootImage {
                         color.getAlpha()));
             }
         }
+    }
+    /**
+     * Método encargado de devolver un color de sombreado en base al numero elegido
+     */
+    public void highlightColor(int selector){
+        switch (selector){
+            case 1:
+                highlight(Color.RED);
+                break;
+            case 2:
+                highlight(Color.BLUE);
+                break;
+            case 3:
+                highlight(Color.GREEN);
+                break;
+            case 4:
+                highlight(Color.MAGENTA);
+                break;       
+        }
+        
     }
 }

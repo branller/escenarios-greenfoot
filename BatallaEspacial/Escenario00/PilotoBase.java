@@ -11,24 +11,40 @@ public abstract class PilotoBase extends ActorBase {
      * La nave que pilotará
      */
     protected NaveDeAtaque navePilotada;
+    //Control de errores
+    protected boolean flag;
     GreenfootImage imagenOriginal = new GreenfootImage(getImage());
 
+    @Override
+    protected void addedToWorld(World world) {
+        imagenBase = getImage();
+        actualizarImagen();
+    }
+
     /**
+     * Pre: La nave no puede tener un piloto anterior
      * post: El Piloto se sube a la Nave
      * 
      * @param nave es la Nave a la que se subirá el piloto
      */
     public void subirse(NaveDeAtaque nave) {
-        navePilotada = nave;
-        actualizarImagen();
+        if (!nave.tienePiloto){
+            navePilotada = nave;
+            nave.conducir(this.ColorNum);
+            actualizarImagen();
+        }
     }
 
     /**
-     * post: El Piloto deja la Nave
+     * Pre: Nave pilotada no puede ser null.
+     * post: El Piloto deja la Nave.
      */
     public void bajarse() {
-        navePilotada = null;
-        actualizarImagen();
+        if(this.navePilotada != null){
+            this.navePilotada.notConducir();
+            this.navePilotada = null;
+            actualizarImagen();
+        }
     }
 
     /**
@@ -37,19 +53,29 @@ public abstract class PilotoBase extends ActorBase {
     @Override
     protected void actualizarImagen() {
         int tamCelda = getWorld().getCellSize();
-        
         MyGreenfootImage nuevaImagen;
-        if (navePilotada != null) {
+
+        if(ColorNum == 0){
+            ColorNum = generarNumero(4,1);
+        }
+
+        if (this.navePilotada != null) {
             nuevaImagen = new MyGreenfootImage(getImage()) {
                 public void configurar() {
-                    highlight();
                     setTransparency(150);
                 }
             };
-        } else {
-            nuevaImagen = new MyGreenfootImage(imagenOriginal);
+            nuevaImagen.scale((int) (tamCelda * ESCALA_X), (int) (tamCelda * ESCALA_Y));
+            setImage(nuevaImagen);
+        }else{
+            nuevaImagen = new MyGreenfootImage(imagenOriginal){
+                public void configurar() {
+                    //Asigna un numero que usara para definir el color del sombreado   
+                    highlightColor(ColorNum);
+                }
+            };
+            nuevaImagen.scale((int) (tamCelda * ESCALA_X), (int) (tamCelda * ESCALA_Y));
+            setImage(nuevaImagen);
         }
-        nuevaImagen.scale((int) (tamCelda * ESCALA_X), (int) (tamCelda * ESCALA_Y));
-        setImage(nuevaImagen);
     }
 }
